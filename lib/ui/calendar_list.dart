@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 import 'calendar_provider.dart';
-import 'calendar_item.dart';
 import 'calendar_painters.dart';
 
 class CalendarList extends StatefulWidget {
-  CalendarList({Key key}) : super(key: key);
+  final CalendarController controller;
+  CalendarList(this.controller, {Key key}) : super(key: key);
 
   @override
   _CalendarListState createState() => _CalendarListState();
@@ -19,7 +19,9 @@ class _CalendarListState extends State<CalendarList> {
   ScrollController verticalScrollController = ScrollController();
   ScrollController horizontalScrollController = ScrollController();
   CalendarProvider get provider => CalendarProvider.of(context);
-  CalendarController get controller => provider.controller;
+  CalendarController get controller => widget.controller;
+  Stream eventAddedStream;
+  Stream eventRemovedStream;
 
   DateTime now;
   double animatedScale;
@@ -30,11 +32,19 @@ class _CalendarListState extends State<CalendarList> {
   @override
   void initState() {
     super.initState();
+    controller.generateIndices();
+    eventAddedStream = controller.eventAdded.stream.asBroadcastStream();
+    eventRemovedStream = controller.eventRemoved.stream.asBroadcastStream();
+    eventAddedStream.listen((data) {
+      setState(() {});
+    });
+    eventRemovedStream.listen((data) {
+      setState(() {});
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    controller.generateIndices();
     return GestureDetector(
         onScaleStart: (details) {
           animatedScale = controller.scale;

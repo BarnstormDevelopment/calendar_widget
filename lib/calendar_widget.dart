@@ -8,7 +8,6 @@ import 'ui/calendar_list.dart';
 import 'ui/calendar_theme.dart';
 
 export 'ui/calendar_theme.dart';
-export 'ui/calendar_item.dart';
 export 'ui/calendar_provider.dart';
 export 'calendar_controller.dart';
 export 'extensions/date_range_extension.dart';
@@ -26,7 +25,7 @@ class CalendarWidget extends StatelessWidget {
     return LayoutBuilder(builder: (context, constraints) {
       calendarController.constraints = constraints;
       return CalendarProvider(
-          child: CalendarList(),
+          child: CalendarList(calendarController),
           childBuilder: builder,
           controller: calendarController,
           theme: theme ?? CalendarTheme(context));

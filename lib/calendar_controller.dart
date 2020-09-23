@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -6,8 +7,8 @@ import 'extensions/date_range_extension.dart';
 
 class CalendarController {
   BoxConstraints constraints;
-  List<CalendarEvent> events = List();
-  List<int> selected = List();
+  List<CalendarEvent> _events = List();
+  List<CalendarEvent> get events => _events;
   double itemWidth;
   double margin;
   double scale;
@@ -18,14 +19,35 @@ class CalendarController {
   Map<int, int> indexMap = Map();
 
   DateTimeRange range;
+
+  StreamController<CalendarEvent> eventAdded =
+      StreamController<CalendarEvent>();
+  StreamController<dynamic> eventRemoved = StreamController<dynamic>();
   CalendarController(@required this.range,
-      {@required this.events,
+      {@required events,
       this.itemWidth = 200,
       this.margin = 24.0,
-      this.scale = 12.0});
+      this.scale = 12.0}) {
+    this._events = events;
+  }
+
+  void dispose() {
+    eventAdded.close();
+  }
 
   int getXIndex(id) {
     return indexMap[id];
+  }
+
+  void addEvent(CalendarEvent event) {
+    this.events.add(event);
+    this.generateIndices();
+    eventAdded.add(event);
+  }
+
+  void removeEvent(dynamic id) {
+    this.events.removeWhere((e) => e.id == id);
+    eventRemoved.add(id);
   }
 
   void generateIndices() {

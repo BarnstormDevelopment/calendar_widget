@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:calendar_widget/calendar_controller.dart';
 import 'package:calendar_widget/models/calendar_event.dart';
 import 'package:flutter/material.dart';
@@ -54,6 +56,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   CalendarController calendarController;
+  int i;
 
   @override
   void initState() {
@@ -94,9 +97,9 @@ class _MyHomePageState extends State<MyHomePage> {
               start: now.add(Duration(hours: 8)),
               end: now.add(Duration(hours: 16))))
     ];
+    i = 5;
     // END TEST DATA
     calendarController = CalendarController(dateTimeRange, events: events);
-    calendarController.events = events;
   }
 
   @override
@@ -125,7 +128,19 @@ class _MyHomePageState extends State<MyHomePage> {
                         child: Text(event.name)))));
       }),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Random random = Random();
+          var min = random.nextInt(8);
+          var now = DateTime.now();
+          now = DateTime(now.year, now.month, now.day, now.hour);
+          calendarController.addEvent(CalendarEvent(
+              id: i,
+              name: 'test',
+              range: DateTimeRange(
+                  start: now.add(Duration(hours: min)),
+                  end: now.add(Duration(hours: min + 2)))));
+          i++;
+        },
         child: Icon(Icons.add),
       ),
     );
