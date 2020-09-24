@@ -1,11 +1,22 @@
 import 'package:flutter/material.dart';
 
+/// Theme for a [CalendarWidget]
 class CalendarTheme {
   Color cardColor;
+
+  /// [Color] of the time indicating lines
   Color lineColor;
+
+  /// [TextStyle] of the time and date shown in the sidebar
   TextStyle timeTextStyle;
+
+  /// [Color] of the background of the sidebar
   Color timeBackgroundColor;
+
+  /// [Color] of the background of the dates on the sidebar.
   Color dayTimeBackgroundColor;
+
+  /// [Color] of the line that indicates the current time
   Color currentTimeColor;
   double cardElevation;
   bool rounded;

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// Base class for events that are added to the calendar.
 class CalendarEvent implements Comparable {
   final int id;
   DateTimeRange range;

@@ -1,6 +1,5 @@
 import 'package:calendar_widget/ui/calendar_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart' as intl;
 import '../calendar_controller.dart';
 import 'calendar_provider.dart';
 

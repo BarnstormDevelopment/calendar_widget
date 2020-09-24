@@ -12,6 +12,9 @@ export 'ui/calendar_provider.dart';
 export 'calendar_controller.dart';
 export 'extensions/date_range_extension.dart';
 
+/// Calendar widget displays a vertically scrollable time based event list.
+///
+/// Expects a [CalendarController], builder function, and optional [CalendarTheme]
 class CalendarWidget extends StatelessWidget {
   final CalendarController calendarController;
   final CalendarTheme theme;

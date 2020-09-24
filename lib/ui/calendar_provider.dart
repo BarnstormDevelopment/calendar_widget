@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import '../calendar_controller.dart';
 import 'calendar_theme.dart';
 
+/// Provides [CalendarController] and [CalendarTheme] to the rest of the
+/// calendar widget tree.
 class CalendarProvider extends InheritedWidget {
   final Widget Function(BuildContext, CalendarEvent) childBuilder;
   final CalendarController controller;
