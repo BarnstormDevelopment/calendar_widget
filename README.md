@@ -1,14 +1,33 @@
-# calendar_widget
+# Calendar Widget
 
-A new Flutter package project.
+Customizable calendar widget that is fully customizable.
 
-## Getting Started
+## Example
+See the examples directory for a full example app.
 
-This project is a starting point for a Dart
-[package](https://flutter.dev/developing-packages/),
-a library module containing code that can be shared easily across
-multiple Flutter or Dart projects.
+## Usage
 
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.dev/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+Adding events to the calendar will require them to subclass the `CalendarEvent` class.
+
+You need to supply a builder function for the `CalendarWidget` to use to draw the events on the screen. You will also need to pass a `CalendarController` which provides persistance of the event list and configuration variables for the calendar. Optionally you can pass a `CalendarTheme` to customize the look of the calendar.
+
+```
+CalendarWidget(calendarController,
+        builder: (BuildContext context, CalendarEvent event) {
+    CalendarProvider provider = CalendarProvider.of(context);
+    CalendarController controller = provider.controller;
+    CalendarTheme theme = provider.theme;
+    return Container(
+        padding: EdgeInsets.all(2.0),
+        width: controller.itemWidth,
+        height: event.range.duration.inHours * controller.interval,
+        child: Material(
+            elevation: theme.cardElevation,
+            borderRadius: BorderRadius.circular(8.0),
+            color: theme.cardColor,
+            child: InkWell(
+                child: Padding(
+                    padding: EdgeInsets.all(4.0),
+                    child: Text(event.name)))));
+    })
+```
