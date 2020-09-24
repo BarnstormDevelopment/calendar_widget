@@ -2,6 +2,8 @@
 
 Customizable calendar widget that is fully customizable.
 
+![](example.gif)
+
 ## Example
 See the examples directory for a full example app.
 
