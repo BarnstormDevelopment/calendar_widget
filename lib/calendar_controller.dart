@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'models/calendar_event.dart';
 import 'extensions/date_range_extension.dart';
 
@@ -15,6 +16,8 @@ class CalendarController {
   double maxScale;
   double minScale;
   bool showCurrentTime;
+  DateFormat timeFormatter;
+  DateFormat dayFormatter;
   double get interval {
     return constraints.maxHeight / scale;
   }
@@ -26,15 +29,19 @@ class CalendarController {
   StreamController<CalendarEvent> eventAdded =
       StreamController<CalendarEvent>();
   StreamController<dynamic> eventRemoved = StreamController<dynamic>();
-  CalendarController(@required this.range,
+  CalendarController(this.range,
       {@required events,
       this.itemWidth = 200,
       this.margin = 24.0,
       this.scale = 12.0,
       this.minScale = 4.0,
       this.maxScale = 36,
-      this.showCurrentTime = true}) {
+      this.showCurrentTime = true,
+      this.timeFormatter,
+      this.dayFormatter}) {
     this._events = events;
+    timeFormatter = timeFormatter ?? DateFormat.Hm();
+    dayFormatter = dayFormatter ?? DateFormat.MEd();
   }
 
   void dispose() {

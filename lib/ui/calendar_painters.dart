@@ -129,33 +129,32 @@ class TimePainter extends CustomPainter {
       final date = controller.range.start.add(Duration(hours: i));
       final textSpan = TextSpan(
         text: date.hour == 0
-            ? intl.DateFormat.MEd().format(date)
-            : intl.DateFormat.Hm().format(date),
+            ? controller.dayFormatter.format(date)
+            : controller.timeFormatter.format(date),
         style: theme.timeTextStyle,
       );
       final textPainter = TextPainter(
-        text: textSpan,
-        textDirection: TextDirection.ltr,
-      );
+          text: textSpan,
+          textDirection: TextDirection.ltr,
+          textAlign: TextAlign.right);
       textPainter.layout(
         minWidth: 0,
         maxWidth: size.width,
       );
       if (date.hour == 0) {
         final RRect borderRect = RRect.fromLTRBR(
-            size.width - controller.margin * 3.2,
+            size.width - (textPainter.width + controller.margin / 2),
             y - textPainter.height,
             size.width,
             y + textPainter.height,
             Radius.circular(8));
         canvas.drawPath(Path()..addRRect(borderRect), selectedBackgroundPaint);
       }
-      var offset = date.hour == 0
-          ? Offset(
-              size.width - controller.margin * 3, y - (textPainter.height / 2))
-          : Offset(
-              size.width - controller.margin * 2, y - (textPainter.height / 2));
+      var offset = Offset(
+          size.width - (textPainter.width + controller.margin / 4),
+          y - (textPainter.height / 2));
 
+      textPainter.textAlign = TextAlign.right;
       textPainter.paint(canvas, offset);
     }
   }
