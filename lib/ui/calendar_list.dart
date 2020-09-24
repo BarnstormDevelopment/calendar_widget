@@ -83,6 +83,7 @@ class _CalendarListState extends State<CalendarList> {
                           width: max(controller.getWidth(),
                               controller.constraints.maxWidth),
                           child: CustomPaint(
+                            foregroundPainter: CurrentTimePainter(context),
                             painter: LinePainter(context),
                             child: Stack(
                               children: controller.events

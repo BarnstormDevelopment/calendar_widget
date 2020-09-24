@@ -133,6 +133,7 @@ class _MyHomePageState extends State<MyHomePage> {
           var min = random.nextInt(8);
           var now = DateTime.now();
           now = DateTime(now.year, now.month, now.day, now.hour);
+          calendarController.removeEvent(i - 1);
           calendarController.addEvent(CalendarEvent(
               id: i,
               name: 'test',

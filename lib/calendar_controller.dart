@@ -12,6 +12,9 @@ class CalendarController {
   double itemWidth;
   double margin;
   double scale;
+  double maxScale;
+  double minScale;
+  bool showCurrentTime;
   double get interval {
     return constraints.maxHeight / scale;
   }
@@ -27,7 +30,10 @@ class CalendarController {
       {@required events,
       this.itemWidth = 200,
       this.margin = 24.0,
-      this.scale = 12.0}) {
+      this.scale = 12.0,
+      this.minScale = 4.0,
+      this.maxScale = 36,
+      this.showCurrentTime = true}) {
     this._events = events;
   }
 

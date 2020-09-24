@@ -18,8 +18,47 @@ class LinePainter extends CustomPainter {
       final paint = Paint()
         ..color = theme.lineColor
         ..strokeWidth = 1;
+      final linePaint = Paint()
+        ..color = theme.lineColor.withAlpha(12)
+        ..strokeWidth = 1;
       canvas.drawLine(Offset(controller.margin, y),
           Offset(size.width - controller.getTimeWidth(mult: 2.3), y), paint);
+      if (controller.scale <= 12)
+        canvas.drawLine(
+            Offset(controller.margin, y + controller.interval / 2),
+            Offset(size.width - controller.getTimeWidth(mult: 2.3),
+                y + controller.interval / 2),
+            linePaint);
+    }
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) {
+    return true;
+  }
+}
+
+class CurrentTimePainter extends CustomPainter {
+  final BuildContext context;
+  CalendarController get controller => CalendarProvider.of(context).controller;
+  CalendarTheme get theme => CalendarProvider.of(context).theme;
+
+  CurrentTimePainter(this.context);
+  @override
+  void paint(Canvas canvas, Size size) {
+    var now = DateTime.now();
+    if (controller.showCurrentTime &&
+        now.isAfter(controller.range.start) &&
+        now.isBefore(controller.range.end)) {
+      var range = DateTimeRange(end: now, start: controller.range.start);
+      final linePaint = Paint()
+        ..color = theme.currentTimeColor
+        ..strokeWidth = 1;
+      var y = controller.interval * (range.duration.inMinutes / 60);
+      canvas.drawLine(
+          Offset(controller.margin, y),
+          Offset(size.width - controller.getTimeWidth(mult: 2.3), y),
+          linePaint);
     }
   }
 
@@ -37,6 +76,20 @@ class TimePainter extends CustomPainter {
   TimePainter(this.context);
   @override
   void paint(Canvas canvas, Size size) {
+    var now = DateTime.now();
+    if (controller.showCurrentTime &&
+        now.isAfter(controller.range.start) &&
+        now.isBefore(controller.range.end)) {
+      var range = DateTimeRange(end: now, start: controller.range.start);
+      final linePaint = Paint()
+        ..color = theme.currentTimeColor
+        ..strokeWidth = 1;
+      var y = controller.interval * (range.duration.inMinutes / 60);
+      canvas.drawLine(
+          Offset(controller.margin, y),
+          Offset(size.width - controller.getTimeWidth(mult: 2.3), y),
+          linePaint);
+    }
     double y = 0;
 
     var backgroundPaint = Paint()
@@ -52,16 +105,22 @@ class TimePainter extends CustomPainter {
       ..lineTo(size.width, size.height)
       ..lineTo(size.width, 0)
       ..lineTo(basex, 0);
-    side = Path.combine(
-        PathOperation.difference,
-        side,
-        Path()
+    var mask = theme.rounded
+        ? (Path()
           ..addRRect(RRect.fromLTRBR(
               0,
               0,
               size.width - controller.getTimeWidth(),
               size.height,
-              Radius.circular(16))));
+              Radius.circular(theme.radius))))
+        : (Path()
+          ..addRect(Rect.fromLTRB(
+            0,
+            0,
+            size.width - controller.getTimeWidth(),
+            size.height,
+          )));
+    side = Path.combine(PathOperation.difference, side, mask);
     canvas.drawPath(side, backgroundPaint);
     for (var i = 0; i < controller.range.duration.inHours; i++) {
       y += controller.interval;
